@@ -1,10 +1,16 @@
 import React, { useState, useContext } from 'react';
 import { CredentialsContext } from '..';
 import { useHistory } from 'react-router';
-import { handleErrors } from './Login';
 
+export const handleErrors = async (response) => {
+    if (!response.ok) {
+        const { message } = await response.json();
+        throw Error(message)
+    }
+    return response.json();
+}
 
-function Register() {
+function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -13,10 +19,10 @@ function Register() {
 
     const [, setCredentials] = useContext(CredentialsContext)
 
-    const register = (e) => {
+    const login = (e) => {
 
         e.preventDefault()
-        fetch(`http://localhost:4000/register`, {
+        fetch(`http://localhost:4000/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +46,7 @@ function Register() {
 
     return (
         <div className="flex flex-col items-center mt-14">
-            <h1 className="text-6xl">Register</h1>
+            <h1 className="text-6xl">Login</h1>
             {<span className="text-red-600 mt-5">{error}</span>}
             <div className="form-control w-5/12">
                 <label className="label">
@@ -51,10 +57,10 @@ function Register() {
                     <span className="label-text">Password</span>
                 </label> 
                 <input type="password" placeholder="password" className="input input-info input-bordered" onChange={(e) => setPassword(e.target.value)}/>
-                <button onClick={register}className="btn my-8 w-20 self-center">Register</button>
+                <button onClick={login}className="btn my-8 w-20 self-center">Login</button>
             </div> 
         </div>
     )
 }
 
-export default Register
+export default Login
