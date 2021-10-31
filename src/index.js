@@ -10,10 +10,7 @@ import Login from "./pages/Login";
 export const CredentialsContext = React.createContext();
 
 function App() {
-  const credentialsState = useState({
-    username: "Arth",
-    password: "arthbhumi",
-  });
+  const credentialsState = useState();
 
   return (
     <div>

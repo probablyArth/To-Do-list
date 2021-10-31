@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
-import { handleErrors } from './Login';
+import React, { useState, useContext, useEffect } from 'react';
+import { handleErrors } from '../pages/Login';
 import { CredentialsContext } from '..';
 
 function Todos() {
 
-    const persist = () => {
+    const persist = (newTodos) => {
         fetch(`http://localhost:4000/todos`, {
             method: 'POST',
             headers: {
@@ -12,11 +12,22 @@ function Todos() {
                 'Authorization': `Basic ${credentials.username}:${credentials.password}`
             },
             body: JSON.stringify({
-                todos
+                newTodos
             })
         }).then(handleErrors)
         .then(() => {});
     }
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/todos`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${credentials.username}:${credentials.password}`
+            }
+        }).then((res) => res.json())
+        .then(todos => setTodos(todos))
+    }, [])
     
     const [todos, setTodos] = useState([{text: "Sup?"}]);
     const [todoText, setTodoText] = useState("");
@@ -27,10 +38,10 @@ function Todos() {
         if (!todoText) return;
 
         const newTodo = {checked: false, text: todoText}
-
+        const newTodos = [...todos, newTodo]
         setTodos([...todos, newTodo]);
         setTodoText("");
-        persist();
+        persist(newTodos);
     }
 
     const toggleTodo = (index) => {
