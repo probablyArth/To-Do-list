@@ -2,21 +2,13 @@ import React, { useState, useContext, useEffect } from 'react';
 import { handleErrors } from '../pages/Login';
 import { CredentialsContext } from '..';
 
+import { MdRemoveCircleOutline } from "react-icons/md"
+
 function Todos() {
 
-    const persist = (newTodos) => {
-        fetch(`http://localhost:4000/todos`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${credentials.username}:${credentials.password}`
-            },
-            body: JSON.stringify({
-                newTodos
-            })
-        }).then(handleErrors)
-        .then(() => {});
-    }
+    const [todos, setTodos] = useState([]);
+    const [todoText, setTodoText] = useState("");
+    const [credentials] = useContext(CredentialsContext)
 
     useEffect(() => {
         fetch(`http://localhost:4000/todos`, {
@@ -28,21 +20,48 @@ function Todos() {
         }).then((res) => res.json())
         .then(todos => setTodos(todos))
     }, [])
-    
-    const [todos, setTodos] = useState([{text: "Sup?"}]);
-    const [todoText, setTodoText] = useState("");
-    const [credentials] = useContext(CredentialsContext);
 
     const addTodo = (e) => {
         e.preventDefault();
         if (!todoText) return;
 
         const newTodo = {checked: false, text: todoText}
-        const newTodos = [...todos, newTodo]
         setTodos([...todos, newTodo]);
         setTodoText("");
-        persist(newTodos);
+        fetch(`http://localhost:4000/todos`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${credentials.username}:${credentials.password}`
+            },
+            body: JSON.stringify({
+                todos
+            })
+        }).then(handleErrors)
+        .then(() => {});
     }
+
+    const deleteTodo = (index) => {
+
+        const newTodoList = [...todos];
+        newTodoList.splice(index, 1);
+        setTodos(newTodoList)
+    }
+
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/todos`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${credentials.username}:${credentials.password}`
+            },
+            body: JSON.stringify({
+                todos
+            })
+        }).then(handleErrors)
+        .then(() => {});
+    }, [todos])
 
     const toggleTodo = (index) => {
         const newTodoList = [...todos];
@@ -54,8 +73,10 @@ function Todos() {
         <div className="flex flex-col items-center mt-10">
             {todos.map((todo, index) => (
                 <div>
-                    <input onChange={() => toggleTodo(index)} type="checkbox"/>           
-                    <label>{todo.text}</label>
+                    <input checked={todo.checked} className="checkbox-primary" onChange={() => toggleTodo(index)} type="checkbox"/>
+                    {todo.checked && <label className="line-through">{todo.text}</label>}{!todo.checked && <label>{todo.text}</label>}
+                    <button onClick={() => deleteTodo(index)}><MdRemoveCircleOutline /></button>
+
                 </div>
             ))}
             <br />
