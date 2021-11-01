@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -22,3 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use(todosRoutes);
 app.use(userRoutes.router);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
