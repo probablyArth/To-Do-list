@@ -8,11 +8,13 @@ function Welcome() {
     const [credentials] = useContext(CredentialsContext)
 
     return (
-        <div className="flex flex-col items-center">
-            <h1 className="text-6xl">Welcome {credentials && credentials.username}</h1>
-            {!credentials && <Link to='/register'>Register</Link>}
-            {!credentials && <Link to='/login'>Login</Link>}
-            {credentials && <Todos />}
+        <div>
+            <div className="flex flex-col items-center">
+                <h1 className="text-6xl">Welcome {credentials && credentials.username}</h1>
+                {!credentials && <p className="py-12">New Around here? Register <Link to='/register' className="underline text-secondary">here.</Link></p>}
+                {!credentials && <p> Already have an account? Login <Link to='/login' className="underline text-secondary">here</Link> </p>}
+                {credentials && <Todos />}
+            </div>
         </div>
     )
 }

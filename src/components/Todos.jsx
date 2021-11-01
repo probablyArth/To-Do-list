@@ -70,19 +70,22 @@ function Todos() {
     }
 
     return (
-        <div className="flex flex-col items-center mt-10">
-            {todos.map((todo, index) => (
-                <div>
-                    <input checked={todo.checked} className="checkbox-primary" onChange={() => toggleTodo(index)} type="checkbox"/>
-                    {todo.checked && <label className="line-through">{todo.text}</label>}{!todo.checked && <label>{todo.text}</label>}
-                    <button onClick={() => deleteTodo(index)}><MdRemoveCircleOutline /></button>
-
+        <div>
+            <div class="p-6 card bordered shadow-lg mt-12">
+                <div className="form-control">
+                    {todos.map((todo, index) => (
+                        <label className="cursor-pointer label">
+                            <input checked={todo.checked} className="toggle" onChange={() => toggleTodo(index)} type="checkbox"/>
+                            {todo.checked && <span className="line-through">{todo.text}</span>}{!todo.checked && <label>{todo.text}</label>}
+                            <button onClick={() => deleteTodo(index)}><MdRemoveCircleOutline /></button>
+                        </label>
+                    ))}
+                    <br />
                 </div>
-            ))}
-            <br />
+            </div>
             <form onSubmit={addTodo}>
-                <input value={todoText} onChange={(e) => setTodoText(e.target.value) } type="text" placeholder="Enter item here" className="input input-bordered" />
-                <button type="submit" className="btn btn-outline btn-accent mt-5">Add</button>
+            <input value={todoText} onChange={(e) => setTodoText(e.target.value) } type="text" placeholder="Enter item here" className="input input-bordered" />
+            <button type="submit" className="btn btn-outline btn-accent mt-5">Add</button>
             </form>
         </div>
     )

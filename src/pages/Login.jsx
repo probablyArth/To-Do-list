@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { CredentialsContext } from '..';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export const handleErrors = async (response) => {
     if (!response.ok) {
@@ -47,6 +48,7 @@ function Login() {
     return (
         <div className="flex flex-col items-center mt-14">
             <h1 className="text-6xl">Login</h1>
+            <span className="mt-5">Don't have an account? Register <Link to="/register" className="underline text-secondary">here</Link></span>
             {<span className="text-red-600 mt-5">{error}</span>}
             <div className="form-control w-5/12">
                 <label className="label">

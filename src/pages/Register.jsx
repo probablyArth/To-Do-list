@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { CredentialsContext } from '..';
 import { useHistory } from 'react-router';
 import { handleErrors } from './Login';
+import { Link } from 'react-router-dom';
 
 
 function Register() {
@@ -15,25 +16,29 @@ function Register() {
 
     const register = (e) => {
 
-        e.preventDefault()
-        fetch(`http://localhost:4000/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username, password
+        if (username && password) {
+            e.preventDefault()
+            fetch(`http://localhost:4000/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username, password
+                })
+            }).then(handleErrors)
+            .then(() => {
+                setCredentials({
+                    username,
+                    password
+                })
+                history.push('/')
+            }).catch((err) => {
+                setError(err.message)
             })
-        }).then(handleErrors)
-        .then(() => {
-            setCredentials({
-                username,
-                password
-            })
-            history.push('/')
-        }).catch((err) => {
-            setError(err.message)
-        })
+        } else {
+            setError("Username and password should not be empty")
+        }
     };
 
     const history = useHistory();
@@ -41,6 +46,7 @@ function Register() {
     return (
         <div className="flex flex-col items-center mt-14">
             <h1 className="text-6xl">Register</h1>
+            <span className="mt-5">Already have an account? Login <Link to="/login" className="underline text-secondary">here</Link></span>
             {<span className="text-red-600 mt-5">{error}</span>}
             <div className="form-control w-5/12">
                 <label className="label">

@@ -29,7 +29,7 @@ router.post("/todos", async (req, res) => {
       });
     } else {
       todos.todos = todosItems.todos;
-      await todos.save();
+      await todos.updateOne(todos);
     }
     res.json({ message: "success" });
   }
