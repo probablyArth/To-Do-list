@@ -3,7 +3,6 @@ import { CredentialsContext } from '..';
 import { useHistory } from 'react-router';
 import { handleErrors } from './Login';
 import { Link } from 'react-router-dom';
-const port = process.env.PORT || 4000;
 
 
 function Register() {
@@ -19,7 +18,7 @@ function Register() {
 
         if (username && password) {
             e.preventDefault()
-            fetch(`http://localhost:${port}/register`, {
+            fetch(`https://todos-backend-prollyarth.herokuapp.com/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

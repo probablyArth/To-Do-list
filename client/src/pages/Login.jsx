@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { CredentialsContext } from '..';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-const port = process.env.PORT || 4000;
 
 export const handleErrors = async (response) => {
     if (!response.ok) {
@@ -24,7 +23,7 @@ function Login() {
     const login = (e) => {
 
         e.preventDefault()
-        fetch(`http://localhost:${port}/login`, {
+        fetch(`https://todos-backend-prollyarth.herokuapp.com/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

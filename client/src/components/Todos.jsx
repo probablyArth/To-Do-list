@@ -4,7 +4,6 @@ import { CredentialsContext } from '..';
 
 import { MdRemoveCircleOutline } from "react-icons/md"
 
-const port = process.env.PORT || 4000;
 
 function Todos() {
 
@@ -13,7 +12,7 @@ function Todos() {
     const [credentials] = useContext(CredentialsContext)
 
     useEffect(() => {
-        fetch(`http://localhost:${port}/todos`, {
+        fetch(`https://todos-backend-prollyarth.herokuapp.com/todos`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,7 +29,7 @@ function Todos() {
         const newTodo = {checked: false, text: todoText}
         setTodos([...todos, newTodo]);
         setTodoText("");
-        fetch(`http://localhost:${port}/todos`, {
+        fetch(`https://todos-backend-prollyarth.herokuapp.com/todos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,7 +51,7 @@ function Todos() {
 
 
     useEffect(() => {
-        fetch(`http://localhost:${port}/todos`, {
+        fetch(`https://todos-backend-prollyarth.herokuapp.com/todos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
